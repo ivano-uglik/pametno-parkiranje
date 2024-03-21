@@ -1,0 +1,7 @@
+{
+  "name": "pametno-parkiranje",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
