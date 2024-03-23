@@ -1,0 +1,26 @@
+@if (tabliceProvider.tablice.length === 0) {
+<div class="info">
+  <ion-icon
+    name="information-circle-outline"
+    size="large"
+    aria-hidden="false"
+  ></ion-icon>
+  <p>
+    Nijedna tablica nije dodana. Kako biste dodali novu registracijsku tablicu,
+    pritisnite tipku <i>Dodaj</i>.
+  </p>
+</div>
+} @else if (tabliceProvider.tablice.length > 0) { @for (tablica of
+tabliceProvider.tablice; track $index) {
+<app-tablica-ui
+  city="{{ tablica.city }}"
+  numbers="{{ tablica.numbers }}"
+  chars="{{ tablica.chars }}"
+/>
+} }
+<div style="text-align: center">
+  <ion-button color="success"
+    >Dodaj
+    <ion-icon slot="end" name="add-sharp"></ion-icon>
+  </ion-button>
+</div>

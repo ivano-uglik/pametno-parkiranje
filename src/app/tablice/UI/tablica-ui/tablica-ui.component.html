@@ -1,0 +1,43 @@
+<div class="tablica-container">
+  <div>
+    <div class="tablica">
+      <img
+        src="assets/euroband.png"
+        style="
+          height: 100%;
+          border-top-left-radius: 0.5rem;
+          border-bottom-left-radius: 0.5rem;
+        "
+      />
+      <div class="tablica-content">
+        <span>{{ city }}</span>
+        <img
+          ngSrc="assets/coat-of-arms.svg"
+          width="50"
+          height="50"
+          class="coat-of-arms"
+        />
+        <span>{{ numbers }}</span>
+        <span>-</span>
+        <span>{{ chars }}</span>
+      </div>
+    </div>
+    <div class="flex-container-centered">
+      <div style="text-align: center">
+        <ion-button color="light" shape="round"
+          >Uredi
+          <ion-icon slot="end" name="create-sharp" size="medium"></ion-icon>
+        </ion-button>
+        <ion-button color="light" shape="round"
+          >Obriši
+          <ion-icon
+            slot="end"
+            name="trash-sharp"
+            size="medium"
+            style="color: #ff0000"
+          ></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</div>

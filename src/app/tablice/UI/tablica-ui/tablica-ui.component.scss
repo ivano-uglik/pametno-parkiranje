@@ -1,0 +1,40 @@
+.tablica {
+  display: flex;
+  font-size: 2rem;
+  font-weight: bolder;
+  font-family: monospace;
+  text-align: center;
+  background-color: white;
+  color: black;
+  border-radius: 1rem;
+  border: 4px solid #9a9a9a;
+  height: 4rem;
+  margin-bottom: 0.5rem;
+}
+.tablica-content {
+  padding-right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 1rem;
+}
+.coat-of-arms {
+  width: 2rem;
+  height: 2rem;
+  margin: 1rem;
+}
+
+.flex-container-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tablica-container {
+  padding-top: 2rem;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

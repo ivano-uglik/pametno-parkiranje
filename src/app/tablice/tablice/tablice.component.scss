@@ -1,0 +1,17 @@
+.info {
+  margin: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  opacity: 50%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.info > ion-icon {
+  height: 3rem;
+  width: 3rem;
+}
