@@ -36,6 +36,20 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'tablice-builder/second',
+        loadComponent: () =>
+          import('../tablice-builder/second/second.page').then(
+            (m) => m.SecondPage
+          ),
+      },
+      {
+        path: 'tablice-builder/third',
+        loadComponent: () =>
+          import('../tablice-builder/third/third.page').then(
+            (m) => m.ThirdPage
+          ),
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',
