@@ -27,6 +27,24 @@ export class TablicaUIComponent {
   @Input() city!: string;
   @Input() numbers!: string;
   @Input() chars!: string;
+  @Input() index!: string;
+
+  transformIndex(index: string) {
+    switch (this.index) {
+      case '0':
+        return 'first';
+        break;
+      case '1':
+        return 'second';
+        break;
+      case '2':
+        return 'third';
+        break;
+      default:
+        return '';
+        break;
+    }
+  }
   constructor() {
     addIcons({ addSharp, createSharp, trashSharp });
   }

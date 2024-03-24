@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TabliceBuilderComponent } from './tablice-builder.component';
+import { TablicaBuilderUIComponent } from './tablica-builder-ui.component';
 
-describe('TabliceBuilderComponent', () => {
-  let component: TabliceBuilderComponent;
-  let fixture: ComponentFixture<TabliceBuilderComponent>;
+describe('TablicaBuilderUIComponent', () => {
+  let component: TablicaBuilderUIComponent;
+  let fixture: ComponentFixture<TablicaBuilderUIComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TabliceBuilderComponent ],
+      declarations: [ TablicaBuilderUIComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TabliceBuilderComponent);
+    fixture = TestBed.createComponent(TablicaBuilderUIComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

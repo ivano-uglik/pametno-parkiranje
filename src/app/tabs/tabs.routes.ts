@@ -22,6 +22,20 @@ export const routes: Routes = [
           import('../tab3/tab3.page').then((m) => m.Tab3Page),
       },
       {
+        path: 'tablice-builder',
+        loadComponent: () =>
+          import('../tablice-builder/tablice-builder.page').then(
+            (m) => m.TabliceBuilderPage
+          ),
+      },
+      {
+        path: 'tablice-builder/first',
+        loadComponent: () =>
+          import('../tablice-builder/first/first.page').then(
+            (m) => m.FirstPage
+          ),
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',
