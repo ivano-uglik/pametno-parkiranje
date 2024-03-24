@@ -15,12 +15,21 @@ import {
   trashSharp,
 } from 'ionicons/icons';
 import { TabliceServiceService } from '../../tablice-service.service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-tablica-ui',
   standalone: true,
   templateUrl: './tablica-ui.component.html',
   styleUrls: ['./tablica-ui.component.scss'],
-  imports: [IonButton, IonIcon, IonCol, IonRow, IonGrid, NgOptimizedImage],
+  imports: [
+    IonButton,
+    IonIcon,
+    IonCol,
+    IonRow,
+    IonGrid,
+    NgOptimizedImage,
+    RouterLink,
+  ],
 })
 export class TablicaUIComponent {
   tabliceProvider = inject(TabliceServiceService);
@@ -47,5 +56,15 @@ export class TablicaUIComponent {
   }
   constructor() {
     addIcons({ addSharp, createSharp, trashSharp });
+  }
+  onDeleteClick(index: string) {
+    const numericIndex = parseInt(index); // Convert index string to number
+    if (!isNaN(numericIndex)) {
+      const updatedTablice = this.tabliceProvider
+        .tablice()
+        .filter((_, idx) => idx !== numericIndex);
+      this.tabliceProvider.tablice.set(updatedTablice); // Update the array in the provider
+    }
+    console.log(this.tabliceProvider.tablice());
   }
 }

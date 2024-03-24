@@ -1,22 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TabliceServiceService {
   constructor() {}
-  tablice: TabliceInterface[] = [
-    {
-      city: 'ZG',
-      numbers: '1234',
-      chars: 'AB',
-    },
-    {
-      city: 'VU',
-      numbers: '511',
-      chars: 'KH',
-    },
-  ];
+  tablice: WritableSignal<TabliceInterface[]> = signal([]);
 }
 
 export interface TabliceInterface {

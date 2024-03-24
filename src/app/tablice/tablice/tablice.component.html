@@ -1,4 +1,4 @@
-@if (tabliceProvider.tablice.length === 0) {
+@if (this.tabliceProvider.tablice().length === 0) {
 <div class="info">
   <ion-icon
     name="information-circle-outline"
@@ -10,18 +10,29 @@
     pritisnite tipku <i>Dodaj</i>.
   </p>
 </div>
-} @else if (tabliceProvider.tablice.length > 0) { @for (tablica of
-tabliceProvider.tablice; track $index) {
+} @else if (this.tabliceProvider.tablice().length > 0) { @for (tablica of
+tabliceProvider.tablice(); track $index) {
 <app-tablica-ui
   city="{{ tablica.city }}"
   numbers="{{ tablica.numbers }}"
   chars="{{ tablica.chars }}"
   index="{{ $index }}"
 />
-} }
+} } @if (this.tabliceProvider.tablice().length < 3) {
 <div style="text-align: center">
-  <ion-button color="success"
-    >Dodaj
+  <ion-button
+    color="success"
+    [routerLink]="
+      this.tabliceProvider.tablice().length === 0
+        ? '/tabs/tablice-builder/first'
+        : this.tabliceProvider.tablice().length === 1
+        ? '/tabs/tablice-builder/second'
+        : '/tabs/tablice-builder/third'
+    "
+  >
+    Dodaj
     <ion-icon slot="end" name="add-sharp"></ion-icon>
   </ion-button>
 </div>
+
+}

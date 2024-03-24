@@ -27,11 +27,11 @@
         <ion-button
           color="light"
           shape="round"
-          href="/tabs/tablice-builder/{{ transformIndex(index) }}"
+          routerLink="/tabs/tablice-builder/{{ transformIndex(index) }}"
           >Uredi
           <ion-icon slot="end" name="create-sharp" size="medium"></ion-icon>
         </ion-button>
-        <ion-button color="light" shape="round"
+        <ion-button color="light" shape="round" (click)="onDeleteClick(index)"
           >Obriši
           <ion-icon
             slot="end"
