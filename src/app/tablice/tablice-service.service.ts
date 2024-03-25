@@ -5,7 +5,9 @@ import { Injectable, WritableSignal, signal } from '@angular/core';
 })
 export class TabliceServiceService {
   constructor() {}
-  tablice: WritableSignal<TabliceInterface[]> = signal([]);
+  tablice: WritableSignal<TabliceInterface[]> = signal([
+    // { city: 'ZG', numbers: '1234', chars: 'BB' },
+  ]);
 }
 
 export interface TabliceInterface {
