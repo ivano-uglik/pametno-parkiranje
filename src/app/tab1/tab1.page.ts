@@ -6,7 +6,9 @@ import {
   IonContent,
   IonSearchbar,
 } from '@ionic/angular/standalone';
+import { Geolocation } from '@capacitor/geolocation';
 import * as L from 'leaflet';
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -15,12 +17,33 @@ import * as L from 'leaflet';
   imports: [IonSearchbar, IonHeader, IonToolbar, IonTitle, IonContent],
 })
 export class Tab1Page {
+  coordinates: any;
   private map!: L.Map;
 
-  ionViewDidEnter() {
-    this.map = L.map('mapId').setView([45.55742, 18.68733], 20);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: 'Koristi OpenStreetMap',
-    }).addTo(this.map);
+  constructor() {
+    this.loadCoordinates();
+  }
+
+  async loadCoordinates() {
+    try {
+      this.coordinates = await Geolocation.getCurrentPosition();
+      console.log(this.coordinates.coords.latitude);
+      this.initializeMap();
+    } catch (error) {
+      console.error('Greška u dobivanju lokacije:', error);
+    }
+  }
+  private initializeMap() {
+    if (this.coordinates) {
+      this.map = L.map('mapId').setView(
+        [this.coordinates.coords.latitude, this.coordinates.coords.longitude],
+        20
+      );
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Napravio Ivano Uglik, bTR',
+      }).addTo(this.map);
+    } else {
+      console.error('Koordinate nisu dostupne.');
+    }
   }
 }
