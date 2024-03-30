@@ -23,11 +23,14 @@ export class Tab1Page {
   constructor() {
     this.loadCoordinates();
   }
-
+  carIcon = L.icon({
+    iconUrl: '../../assets/car-icon.svg',
+    iconSize: [48, 48],
+  });
   async loadCoordinates() {
     try {
+      await Geolocation.requestPermissions();
       this.coordinates = await Geolocation.getCurrentPosition();
-      console.log(this.coordinates.coords.latitude);
       this.initializeMap();
     } catch (error) {
       console.error('Greška u dobivanju lokacije:', error);
@@ -35,13 +38,20 @@ export class Tab1Page {
   }
   private initializeMap() {
     if (this.coordinates) {
-      this.map = L.map('mapId').setView(
+      this.map = L.map('mapId', {
+        zoomControl: false,
+        attributionControl: false,
+      }).setView(
         [this.coordinates.coords.latitude, this.coordinates.coords.longitude],
         20
       );
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Napravio Ivano Uglik, bTR',
-      }).addTo(this.map);
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(
+        this.map
+      );
+      L.marker(
+        [this.coordinates.coords.latitude, this.coordinates.coords.longitude],
+        { icon: this.carIcon }
+      ).addTo(this.map);
     } else {
       console.error('Koordinate nisu dostupne.');
     }
