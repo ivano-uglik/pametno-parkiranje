@@ -9,15 +9,15 @@ import {
   IonIcon,
   IonButton,
 } from '@ionic/angular/standalone';
-import { getVocative } from 'vocative';
-import { Geolocation } from '@capacitor/geolocation';
+import { Geolocation, Position } from '@capacitor/geolocation';
 import * as L from 'leaflet';
 import { addIcons } from 'ionicons';
 import { settings } from 'ionicons/icons';
+
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-home-route',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
     IonButton,
@@ -32,9 +32,9 @@ import { settings } from 'ionicons/icons';
     RouterLinkActive,
   ],
 })
-export class Tab1Page {
-  coordinates: any;
-  private map!: L.Map;
+export class HomePage {
+  coordinates!: Position;
+  map!: L.Map;
   constructor() {
     this.loadCoordinates();
     addIcons({ settings });
@@ -67,5 +67,6 @@ export class Tab1Page {
     } else {
       console.error('Koordinate nisu dostupne.');
     }
+    4;
   }
 }

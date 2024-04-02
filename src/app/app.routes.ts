@@ -3,6 +3,21 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+  },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./settings/settings.page').then((m) => m.SettingsPage),
+  },
+  {
+    path: '/settings/plates',
+    loadComponent: () =>
+      import('./settings/plates/plates.page').then((m) => m.PlatesPage),
   },
 ];
