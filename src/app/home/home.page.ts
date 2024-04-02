@@ -1,31 +1,24 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonSearchbar,
   IonIcon,
-  IonButton,
+  IonModal,
 } from '@ionic/angular/standalone';
 import { Geolocation, Position } from '@capacitor/geolocation';
 import * as L from 'leaflet';
 import { addIcons } from 'ionicons';
 import { settings } from 'ionicons/icons';
-
 @Component({
   selector: 'app-home-route',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
-    IonButton,
-    IonIcon,
     IonSearchbar,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
+    IonIcon,
+    IonModal,
     IonContent,
     RouterOutlet,
     RouterLink,
@@ -67,6 +60,5 @@ export class HomePage {
     } else {
       console.error('Koordinate nisu dostupne.');
     }
-    4;
   }
 }
