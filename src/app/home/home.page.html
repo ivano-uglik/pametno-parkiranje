@@ -21,15 +21,19 @@
       ></ion-icon>
     </a>
   </div>
-  <div id="mapId" style="height: 100%"></div>
-  test
+  <div
+    id="mapId"
+    style="height: 100%"
+    (click)="modal.setCurrentBreakpoint(0.75)"
+  ></div>
   <ion-modal
     #modal
     trigger="open-modal"
     [isOpen]="true"
     [initialBreakpoint]="0.10"
-    [breakpoints]="[0.10, 0.80]"
+    [breakpoints]="[0.10, 0.75, 1]"
     [backdropDismiss]="false"
+    [backdropBreakpoint]="0.75"
   >
     <ng-template>
       <ion-content class="ion-padding">

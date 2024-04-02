@@ -40,6 +40,10 @@ export class HomePage {
     await Geolocation.requestPermissions();
     this.coordinates = await Geolocation.getCurrentPosition();
     this.initializeMap();
+    this.map.on('click', (e) => {
+      console.log(e.latlng);
+      L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map);
+    });
   }
   private initializeMap() {
     if (this.coordinates) {
