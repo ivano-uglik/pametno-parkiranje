@@ -26,8 +26,10 @@ import { settings } from 'ionicons/icons';
   ],
 })
 export class HomePage {
-  coordinates!: Position;
+  isOpen = true;
+  coordinates!: any;
   map!: L.Map;
+  locationMarker: L.Marker | undefined;
   constructor() {
     this.loadCoordinates();
     addIcons({ settings });
@@ -36,13 +38,53 @@ export class HomePage {
     iconUrl: '../../assets/car-icon.svg',
     iconSize: [48, 48],
   });
+  locationIcon = L.icon({
+    iconUrl: '../../assets/location-sharp.svg',
+    iconSize: [48, 48],
+  });
+  ionViewWillEnter() {
+    this.isOpen = true;
+  }
   async loadCoordinates() {
-    await Geolocation.requestPermissions();
-    this.coordinates = await Geolocation.getCurrentPosition();
+    try {
+      await Geolocation.requestPermissions();
+      this.coordinates = await Geolocation.getCurrentPosition();
+    } catch (error) {
+      console.error(
+        'Error getting coordinates using Capacitor Geolocation API:',
+        error
+      );
+      console.log('Trying HTML Geolocation API...');
+      this.coordinates = await this.getHTMLGeolocation();
+    }
     this.initializeMap();
     this.map.on('click', (e) => {
       console.log(e.latlng);
-      L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map);
+      if (this.locationMarker) {
+        this.map.removeLayer(this.locationMarker);
+      }
+      this.locationMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+        icon: this.locationIcon,
+      }).addTo(this.map);
+    });
+  }
+
+  private async getHTMLGeolocation(): Promise<Position> {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve(position);
+          },
+          (error) => {
+            console.error('HTML Geolocation API error:', error);
+            reject(error);
+          }
+        );
+      } else {
+        console.error('HTML Geolocation API is not supported.');
+        reject(new Error('HTML Geolocation API is not supported.'));
+      }
     });
   }
   private initializeMap() {
@@ -62,7 +104,7 @@ export class HomePage {
         { icon: this.carIcon }
       ).addTo(this.map);
     } else {
-      console.error('Koordinate nisu dostupne.');
+      console.error('Coordinates are not available.');
     }
   }
 }

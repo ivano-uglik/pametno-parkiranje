@@ -18,6 +18,7 @@
         size="large"
         color="light"
         aria-label="Settings"
+        (click)="this.isOpen = false"
       ></ion-icon>
     </a>
   </div>
@@ -29,7 +30,7 @@
   <ion-modal
     #modal
     trigger="open-modal"
-    [isOpen]="true"
+    [isOpen]="isOpen"
     [initialBreakpoint]="0.10"
     [breakpoints]="[0.10, 0.75, 1]"
     [backdropDismiss]="false"

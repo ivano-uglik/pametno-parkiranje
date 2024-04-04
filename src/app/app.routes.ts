@@ -16,7 +16,7 @@ export const routes: Routes = [
       import('./settings/settings.page').then((m) => m.SettingsPage),
   },
   {
-    path: '/settings/plates',
+    path: 'settings/plates',
     loadComponent: () =>
       import('./settings/plates/plates.page').then((m) => m.PlatesPage),
   },
