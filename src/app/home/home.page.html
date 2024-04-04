@@ -38,7 +38,11 @@
   >
     <ng-template>
       <ion-content class="ion-padding">
-        <h4 style="text-align: center">Upravljanje parkingom</h4>
+        <h4 style="text-align: center">
+          {{this.address.road === '' ? 'Upravljanje parkingom' :
+          this.address.road}}
+        </h4>
+        <p style="text-align: center">{{this.address.suburb}}</p>
       </ion-content>
     </ng-template>
   </ion-modal>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
   IonContent,
@@ -10,6 +10,10 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 import * as L from 'leaflet';
 import { addIcons } from 'ionicons';
 import { settings } from 'ionicons/icons';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import type { GeoJsonObject } from 'geojson/index.d.ts';
+import { addressInterface } from 'types';
 @Component({
   selector: 'app-home-route',
   templateUrl: 'home.page.html',
@@ -23,6 +27,8 @@ import { settings } from 'ionicons/icons';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
+    CommonModule,
+    HttpClientModule,
   ],
 })
 export class HomePage {
@@ -66,9 +72,9 @@ export class HomePage {
       this.locationMarker = L.marker([e.latlng.lat, e.latlng.lng], {
         icon: this.locationIcon,
       }).addTo(this.map);
+      this.fetchData(e.latlng.lat, e.latlng.lng);
     });
   }
-
   private async getHTMLGeolocation(): Promise<Position> {
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -87,6 +93,28 @@ export class HomePage {
       }
     });
   }
+  geoJSONFeature = [
+    {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [19.00108, 45.35346],
+            [19.00262, 45.35399],
+            [19.00239, 45.35425],
+            [19.0026, 45.35431],
+            [19.00329, 45.35356],
+            [19.00292, 45.35346],
+            [19.00279, 45.35372],
+            [19.00121, 45.35322],
+            [19.00108, 45.35346],
+          ],
+        ],
+      },
+    },
+  ];
   private initializeMap() {
     if (this.coordinates) {
       this.map = L.map('mapId', {
@@ -103,8 +131,25 @@ export class HomePage {
         [this.coordinates.coords.latitude, this.coordinates.coords.longitude],
         { icon: this.carIcon }
       ).addTo(this.map);
+      // @ts-ignore
+      L.geoJson(this.geoJSONFeature).addTo(this.map);
     } else {
       console.error('Coordinates are not available.');
     }
+  }
+  httpClient = inject(HttpClient);
+  address: addressInterface = { road: '', suburb: '' };
+  fetchData(lat: number, lon: number) {
+    this.httpClient
+      .get(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+      )
+      .subscribe((data: any) => {
+        this.address = {
+          road: data.address.road,
+          suburb: data.address.suburb,
+        };
+        console.log(data.address);
+      });
   }
 }

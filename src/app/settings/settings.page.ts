@@ -56,5 +56,5 @@ export class SettingsPage {
       chevronBack,
     });
   }
-  name = getVocative('Boris');
+  name = getVocative('Ivan');
 }
