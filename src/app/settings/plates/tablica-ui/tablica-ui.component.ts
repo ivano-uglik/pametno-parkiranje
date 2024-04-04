@@ -23,7 +23,7 @@ import {
   createSharp,
   trashSharp,
 } from 'ionicons/icons';
-import { TabliceServiceService } from '../../tablice-service.service';
+import { TabliceServiceService } from '../tablice-service.service';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 @Component({

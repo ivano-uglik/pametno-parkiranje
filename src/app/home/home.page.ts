@@ -12,7 +12,6 @@ import { addIcons } from 'ionicons';
 import { settings } from 'ionicons/icons';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import type { GeoJsonObject } from 'geojson/index.d.ts';
 @Component({
   selector: 'app-home-route',
   templateUrl: 'home.page.html',
