@@ -13,7 +13,6 @@ import { settings } from 'ionicons/icons';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import type { GeoJsonObject } from 'geojson/index.d.ts';
-import { addressInterface } from 'types';
 @Component({
   selector: 'app-home-route',
   templateUrl: 'home.page.html',
@@ -138,18 +137,48 @@ export class HomePage {
     }
   }
   httpClient = inject(HttpClient);
-  address: addressInterface = { road: '', suburb: '' };
+  address!: any;
   fetchData(lat: number, lon: number) {
     this.httpClient
       .get(
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
       )
       .subscribe((data: any) => {
-        this.address = {
-          road: data.address.road,
-          suburb: data.address.suburb,
-        };
+        this.address = data.address;
         console.log(data.address);
       });
+  }
+
+  getPrimaryLocation(): string {
+    // if street selected, return street
+    // if in street there is an amenity (shopping mall, movie theater etc.) return amenity
+    // if in street there is house number, return street + house number
+
+    // Kolodvorska ulica
+    // Osnovna škola Dragutina Tadijanovića
+    // Ulica Stjepana Radića, 13
+    if (this.address) {
+      if (this.address.amenity) {
+        return this.address.amenity;
+      } else if (this.address.house_number) {
+        return `${this.address.road}, ${this.address.house_number}`;
+      }
+      return this.address.road;
+    }
+    return 'Pametno Parkiranje';
+  }
+  getSecondaryLocation(): string {
+    if (this.address) {
+      if (this.address.suburb) {
+        return this.address.suburb;
+      } else if (this.address.village) {
+        return this.address.village;
+      } else if (this.address.town) {
+        return this.address.town;
+      } else if (this.address.municipality) {
+        return this.address.municipality;
+      }
+    }
+    return '';
   }
 }
