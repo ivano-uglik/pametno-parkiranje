@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
   IonContent,
@@ -12,6 +12,7 @@ import { addIcons } from 'ionicons';
 import { settings } from 'ionicons/icons';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { zona1 } from 'coordinates';
 @Component({
   selector: 'app-home-route',
   templateUrl: 'home.page.html',
@@ -91,28 +92,7 @@ export class HomePage {
       }
     });
   }
-  geoJSONFeature = [
-    {
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Polygon',
-        coordinates: [
-          [
-            [19.00108, 45.35346],
-            [19.00262, 45.35399],
-            [19.00239, 45.35425],
-            [19.0026, 45.35431],
-            [19.00329, 45.35356],
-            [19.00292, 45.35346],
-            [19.00279, 45.35372],
-            [19.00121, 45.35322],
-            [19.00108, 45.35346],
-          ],
-        ],
-      },
-    },
-  ];
+  polygons!: L.Polygon;
   private initializeMap() {
     if (this.coordinates) {
       this.map = L.map('mapId', {
@@ -129,11 +109,35 @@ export class HomePage {
         [this.coordinates.coords.latitude, this.coordinates.coords.longitude],
         { icon: this.carIcon }
       ).addTo(this.map);
-      // @ts-ignore
-      L.geoJson(this.geoJSONFeature).addTo(this.map);
+      this.polygons = L.polygon(zona1, { color: '#FFFF00' }).addTo(this.map);
     } else {
       console.error('Coordinates are not available.');
     }
+  }
+
+  isMarkerInsidePolygon(marker: any, poly: any) {
+    var inside = false;
+    var x = marker.getLatLng().lat,
+      y = marker.getLatLng().lng;
+    for (var ii = 0; ii < poly.getLatLngs().length; ii++) {
+      var polyPoints = poly.getLatLngs()[ii];
+      for (
+        var i = 0, j = polyPoints.length - 1;
+        i < polyPoints.length;
+        j = i++
+      ) {
+        var xi = polyPoints[i].lat,
+          yi = polyPoints[i].lng;
+        var xj = polyPoints[j].lat,
+          yj = polyPoints[j].lng;
+
+        var intersect =
+          yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+        if (intersect) inside = !inside;
+      }
+    }
+
+    return inside;
   }
   httpClient = inject(HttpClient);
   address!: any;
