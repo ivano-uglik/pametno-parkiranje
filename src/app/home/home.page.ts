@@ -1,10 +1,11 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
   IonContent,
   IonSearchbar,
   IonIcon,
   IonModal,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { Geolocation, Position } from '@capacitor/geolocation';
 import * as L from 'leaflet';
@@ -13,12 +14,14 @@ import { settings } from 'ionicons/icons';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { zona1 } from 'coordinates';
+import { ManageParkingComponent } from './manage-parking/manage-parking.component';
 @Component({
   selector: 'app-home-route',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonSearchbar,
     IonIcon,
     IonModal,
@@ -28,12 +31,16 @@ import { zona1 } from 'coordinates';
     RouterLinkActive,
     CommonModule,
     HttpClientModule,
+    ManageParkingComponent,
   ],
 })
 export class HomePage {
+  @ViewChild(IonToast) toast!: IonToast;
+  @ViewChild(IonModal) modal!: IonModal;
   isOpen = true;
   coordinates!: any;
   map!: L.Map;
+  isParking!: boolean;
   locationMarker: L.Marker | undefined;
   constructor() {
     this.loadCoordinates();
@@ -72,6 +79,17 @@ export class HomePage {
         icon: this.locationIcon,
       }).addTo(this.map);
       this.fetchData(e.latlng.lat, e.latlng.lng);
+      if (
+        this.isMarkerInsidePolygon(this.locationMarker, this.polygons) === true
+      ) {
+        this.modal.setCurrentBreakpoint(0.75);
+        this.isParking = true;
+      } else if (
+        this.isMarkerInsidePolygon(this.locationMarker, this.polygons) === false
+      ) {
+        this.presentToast();
+        this.isParking = false;
+      }
     });
   }
   private async getHTMLGeolocation(): Promise<Position> {
@@ -183,5 +201,9 @@ export class HomePage {
       }
     }
     return '';
+  }
+
+  presentToast() {
+    this.toast.present();
   }
 }

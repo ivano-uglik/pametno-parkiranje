@@ -22,14 +22,9 @@
       ></ion-icon>
     </a>
   </div>
-  <div
-    id="mapId"
-    style="height: 100%"
-    (click)="modal.setCurrentBreakpoint(0.75)"
-  ></div>
+  <div id="mapId" style="height: 100%"></div>
   <ion-modal
     #modal
-    trigger="open-modal"
     [isOpen]="isOpen"
     [initialBreakpoint]="0.10"
     [breakpoints]="[0.10, 0.75, 1]"
@@ -40,7 +35,15 @@
       <ion-content class="ion-padding">
         <h4 style="text-align: center">{{getPrimaryLocation()}}</h4>
         <p style="text-align: center">{{getSecondaryLocation()}}</p>
+        @if (this.isParking) {
+        <app-manage-parking></app-manage-parking>
+        }
       </ion-content>
     </ng-template>
   </ion-modal>
+  <ion-toast
+    message="Lokacija nije unutar parkirne zone."
+    class="custom-toast"
+    [duration]="1000"
+  ></ion-toast>
 </ion-content>
