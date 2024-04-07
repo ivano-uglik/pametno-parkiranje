@@ -13,8 +13,9 @@ import { addIcons } from 'ionicons';
 import { settings } from 'ionicons/icons';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { zona1 } from 'coordinates';
 import { ManageParkingComponent } from './manage-parking/manage-parking.component';
+import { zones } from 'zones';
+import { ManageParkingService } from './manageParking/manage-parking.service';
 @Component({
   selector: 'app-home-route',
   templateUrl: 'home.page.html',
@@ -35,6 +36,7 @@ import { ManageParkingComponent } from './manage-parking/manage-parking.componen
   ],
 })
 export class HomePage {
+  manageParkingService = inject(ManageParkingService);
   @ViewChild(IonToast) toast!: IonToast;
   @ViewChild(IonModal) modal!: IonModal;
   isOpen = true;
@@ -79,17 +81,26 @@ export class HomePage {
         icon: this.locationIcon,
       }).addTo(this.map);
       this.fetchData(e.latlng.lat, e.latlng.lng);
-      if (
-        this.isMarkerInsidePolygon(this.locationMarker, this.polygons) === true
-      ) {
-        this.modal.setCurrentBreakpoint(0.75);
-        this.isParking = true;
-      } else if (
-        this.isMarkerInsidePolygon(this.locationMarker, this.polygons) === false
-      ) {
-        this.presentToast();
-        this.isParking = false;
-      }
+      zones.forEach((zone: any) => {
+        if (
+          this.isMarkerInsidePolygon(this.locationMarker, zone.polygon) === true
+        ) {
+          this.modal.setCurrentBreakpoint(0.75);
+          this.isParking = true;
+          this.manageParkingService.setParking(
+            zone.metadata.name,
+            zone.metadata.smsNumber,
+            zone.metadata.openingTime,
+            zone.metadata.closingTime
+          );
+        } else if (
+          this.isMarkerInsidePolygon(this.locationMarker, zone.polygon) ===
+          false
+        ) {
+          this.presentToast();
+          this.isParking = false;
+        }
+      });
     });
   }
   private async getHTMLGeolocation(): Promise<Position> {
@@ -127,7 +138,9 @@ export class HomePage {
         [this.coordinates.coords.latitude, this.coordinates.coords.longitude],
         { icon: this.carIcon }
       ).addTo(this.map);
-      this.polygons = L.polygon(zona1, { color: '#FFFF00' }).addTo(this.map);
+      zones.forEach((zone: any) => {
+        zone.polygon.addTo(this.map);
+      });
     } else {
       console.error('Coordinates are not available.');
     }

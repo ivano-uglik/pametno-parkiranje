@@ -1,20 +1,20 @@
 <div>
   <div class="zona">
     <div class="inline">
-      <h1>{{ manageParkingService.zone() }}</h1>
+      <h1>{{ manageParkingService.name() }}</h1>
       <p style="display: inline-flex; align-items: center; gap: 0.5rem">
         {{ manageParkingService.smsNumber() }}
         <ion-icon name="mail" size="small"></ion-icon>
       </p>
     </div>
-    <p>{{ manageParkingService.workingTimes() }}</p>
+    <p>{{ manageParkingService.calculateWorkingTime() }}</p>
   </div>
-  @if (manageParkingService.closingIn() < 60) {
+  @if (manageParkingService.calculateClosingTime() < 60) {
   <div class="closing-warning">
     <ion-icon name="warning" size="large"></ion-icon>
     <p>
       Parkirna zona zatvara se za
-      {{ manageParkingService.closingIn() }}min!
+      {{ manageParkingService.calculateClosingTime() }}min!
     </p>
     <ion-icon name="warning" size="large"></ion-icon>
   </div>
