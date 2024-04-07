@@ -81,6 +81,7 @@ export class HomePage {
         icon: this.locationIcon,
       }).addTo(this.map);
       this.fetchData(e.latlng.lat, e.latlng.lng);
+      let markerInsideAnyPolygon = false;
       zones.forEach((zone: any) => {
         if (
           this.isMarkerInsidePolygon(this.locationMarker, zone.polygon) === true
@@ -93,14 +94,14 @@ export class HomePage {
             zone.metadata.openingTime,
             zone.metadata.closingTime
           );
-        } else if (
-          this.isMarkerInsidePolygon(this.locationMarker, zone.polygon) ===
-          false
-        ) {
-          this.presentToast();
-          this.isParking = false;
+          markerInsideAnyPolygon = true;
         }
       });
+      if (!markerInsideAnyPolygon) {
+        this.modal.setCurrentBreakpoint(0.1);
+        this.presentToast();
+        this.isParking = false;
+      }
     });
   }
   private async getHTMLGeolocation(): Promise<Position> {
